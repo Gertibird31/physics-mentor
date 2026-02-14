@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Physics Mentor</title>
+    <title>Physics Mentor · Physics 1</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -17,118 +17,139 @@
       <div class="container nav-wrap">
         <a class="brand" href="#">Physics Mentor</a>
         <nav class="nav-links" aria-label="Main navigation">
-          <a href="#subjects">Subjects</a>
-          <a href="#paths">Learning Paths</a>
+          <a href="#module">Physics 1 Module</a>
+          <a href="#topics">Topics</a>
           <a href="#practice">Practice</a>
           <a href="#resources">Resources</a>
         </nav>
-        <button class="cta">Start learning</button>
+        <button class="cta">Start Physics 1</button>
       </div>
     </header>
 
     <main>
-      <section class="hero container">
+      <section class="hero container" id="module">
         <div>
-          <p class="eyebrow">Master physics step by step</p>
-          <h1>Your guided physics classroom, built for deep understanding.</h1>
+          <p class="eyebrow">Start with High School Physics 1</p>
+          <h1>A topic-first course with guided lessons and instant practice feedback.</h1>
           <p class="hero-copy">
-            Learn from high-school mechanics to university electromagnetism with bite-sized
-            lessons, visual explanations, and adaptive practice.
+            This first module is organized by core Physics 1 topics. Each topic includes a clear
+            learning sequence and a short formative problem where students can submit an answer and
+            receive targeted feedback.
           </p>
           <div class="hero-actions">
-            <button class="primary">Explore courses</button>
-            <button class="secondary">Take placement quiz</button>
+            <button class="primary">View full sequence</button>
+            <button class="secondary">Try first practice set</button>
           </div>
         </div>
-        <aside class="hero-card" aria-label="Progress highlight">
-          <h2>This week</h2>
-          <p>Wave Mechanics</p>
-          <div class="progress"><span style="width: 66%"></span></div>
-          <small>66% complete · 4 lessons left</small>
+        <aside class="hero-card" aria-label="Module overview">
+          <h2>Physics 1 roadmap</h2>
+          <p>6 topics · 24 lessons · 42 feedback activities</p>
+          <div class="progress"><span style="width: 22%"></span></div>
+          <small>Currently building Topic 1–2 in detail</small>
           <ul>
-            <li>Standing waves and harmonics</li>
-            <li>Energy transport in waves</li>
-            <li>Practice: superposition</li>
+            <li>Kinematics foundations</li>
+            <li>Newton's laws and free-body diagrams</li>
+            <li>Energy, momentum, and circular motion</li>
           </ul>
         </aside>
       </section>
 
-      <section id="subjects" class="section container">
+      <section id="topics" class="section container">
         <div class="section-head">
-          <h2>Popular subjects</h2>
-          <a href="#">Browse all</a>
+          <h2>Physics 1 topics and sequence</h2>
+          <a href="#">Download syllabus draft</a>
         </div>
-        <div class="card-grid">
-          <article class="card">
-            <h3>Classical Mechanics</h3>
-            <p>Forces, motion, momentum, and rotational dynamics.</p>
-            <span>32 lessons</span>
+
+        <div class="topic-grid">
+          <article class="topic-card">
+            <h3>Topic 1 · Kinematics</h3>
+            <p class="topic-goal">Goal: describe motion with position, velocity, and acceleration.</p>
+            <ol>
+              <li>Motion graphs and units</li>
+              <li>Average vs instantaneous velocity</li>
+              <li>Acceleration and constant-acceleration models</li>
+              <li>2D projectile motion</li>
+            </ol>
           </article>
-          <article class="card">
-            <h3>Electricity & Magnetism</h3>
-            <p>Fields, circuits, Gauss's law, and magnetic induction.</p>
-            <span>28 lessons</span>
+
+          <article class="topic-card">
+            <h3>Topic 2 · Dynamics</h3>
+            <p class="topic-goal">Goal: connect motion changes to net force using Newton's laws.</p>
+            <ol>
+              <li>Inertia and Newton's first law</li>
+              <li>Free-body diagrams</li>
+              <li>Applying F = ma in one and two dimensions</li>
+              <li>Friction, tension, and normal force models</li>
+            </ol>
           </article>
-          <article class="card">
-            <h3>Waves & Optics</h3>
-            <p>Wave behavior, interference, diffraction, and lenses.</p>
-            <span>24 lessons</span>
+
+          <article class="topic-card">
+            <h3>Topic 3 · Energy</h3>
+            <p class="topic-goal">Goal: solve problems with work-energy methods.</p>
+            <ol>
+              <li>Work and kinetic energy</li>
+              <li>Potential energy and conservative forces</li>
+              <li>Energy bar charts and transfer tracking</li>
+              <li>Power and efficiency</li>
+            </ol>
           </article>
-          <article class="card">
-            <h3>Thermodynamics</h3>
-            <p>Heat, entropy, laws of thermodynamics, and kinetic theory.</p>
-            <span>21 lessons</span>
+
+          <article class="topic-card">
+            <h3>Topic 4 · Momentum</h3>
+            <p class="topic-goal">Goal: analyze collisions and interactions in closed systems.</p>
+            <ol>
+              <li>Impulse and momentum change</li>
+              <li>Conservation of momentum</li>
+              <li>1D elastic and inelastic collisions</li>
+              <li>Center-of-mass reasoning</li>
+            </ol>
           </article>
         </div>
       </section>
 
-      <section id="paths" class="section alt-bg">
+      <section id="practice" class="section alt-bg">
         <div class="container">
           <div class="section-head">
-            <h2>Structured learning paths</h2>
-            <a href="#">See roadmap</a>
+            <h2>Topic check-ins (instant feedback)</h2>
+            <a href="#">Open full problem bank</a>
           </div>
-          <div class="path-grid">
-            <div class="path-card">
-              <h3>High School Physics</h3>
-              <p>Build intuition from motion to modern physics.</p>
-              <ol>
-                <li>Kinematics & Newton's Laws</li>
-                <li>Energy & Momentum</li>
-                <li>Circuits, Waves, and Optics</li>
-              </ol>
-            </div>
-            <div class="path-card">
-              <h3>First-Year University</h3>
-              <p>Strengthen proofs, vector methods, and calculus-based problem solving.</p>
-              <ol>
-                <li>Vector Mechanics</li>
-                <li>Maxwell Foundations</li>
-                <li>Oscillations & Thermal Systems</li>
-              </ol>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      <section id="practice" class="section container">
-        <div class="section-head">
-          <h2>Practice center</h2>
-          <a href="#">Open all sets</a>
-        </div>
-        <div class="practice-wrap">
-          <article>
-            <h3>Quick drills</h3>
-            <p>10-minute targeted practice on recent lessons.</p>
-          </article>
-          <article>
-            <h3>Mixed unit tests</h3>
-            <p>Real exam-style sessions with instant feedback.</p>
-          </article>
-          <article>
-            <h3>Challenge problems</h3>
-            <p>Olympiad-inspired questions for advanced learners.</p>
-          </article>
+          <div class="practice-grid">
+            <article class="practice-card" data-answer="20" data-unit="m/s">
+              <h3>Kinematics check</h3>
+              <p>
+                A car increases speed from 5 m/s to 25 m/s in 1.0 s. What is its acceleration?
+              </p>
+              <label>
+                Your answer
+                <input type="number" step="any" aria-label="Kinematics answer" />
+              </label>
+              <button class="primary check-answer">Check answer</button>
+              <p class="feedback" aria-live="polite"></p>
+            </article>
+
+            <article class="practice-card" data-answer="30" data-unit="N">
+              <h3>Dynamics check</h3>
+              <p>A 6 kg object accelerates at 5 m/s². What is the net force magnitude?</p>
+              <label>
+                Your answer
+                <input type="number" step="any" aria-label="Dynamics answer" />
+              </label>
+              <button class="primary check-answer">Check answer</button>
+              <p class="feedback" aria-live="polite"></p>
+            </article>
+
+            <article class="practice-card" data-answer="147" data-unit="J">
+              <h3>Energy check</h3>
+              <p>How much gravitational potential energy does a 3 kg mass gain when lifted 5 m?</p>
+              <label>
+                Your answer
+                <input type="number" step="any" aria-label="Energy answer" />
+              </label>
+              <button class="primary check-answer">Check answer</button>
+              <p class="feedback" aria-live="polite"></p>
+            </article>
+          </div>
         </div>
       </section>
     </main>
@@ -137,14 +158,14 @@
       <div class="container footer-wrap">
         <div>
           <p class="brand">Physics Mentor</p>
-          <p>Free, focused physics learning for ambitious students.</p>
+          <p>Focused module design for high school Physics 1.</p>
         </div>
         <div>
-          <h4>Resources</h4>
+          <h4>Teacher resources</h4>
           <ul>
-            <li><a href="#">Formula sheet</a></li>
-            <li><a href="#">Unit guides</a></li>
-            <li><a href="#">Exam prep</a></li>
+            <li><a href="#">Topic pacing guide</a></li>
+            <li><a href="#">Problem-writing rubric</a></li>
+            <li><a href="#">Feedback sentence stems</a></li>
           </ul>
         </div>
       </div>
