@@ -25,3 +25,14 @@ This project now includes an email/password sign-in modal powered by Firebase Au
 ```
 
 If no API key is supplied, the sign-in UI still appears but login/signup requests are disabled.
+
+## Account hub (separate profile + progress tracking)
+
+After sign-in, an **Account hub** button appears in the header. This opens a separate profile/progress panel where each email account can store:
+- display name
+- study goal
+- weekly target hours
+- Physics 1 / Physics 2 mastery percentages
+- current study streak and notes
+
+This account profile data is stored locally per email in browser `localStorage`, separate from Firebase auth credentials.
