@@ -341,3 +341,116 @@ textarea {
     grid-template-columns: 1fr;
   }
 }
+
+.auth-trigger {
+  white-space: nowrap;
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.auth-modal {
+  border: none;
+  border-radius: 16px;
+  width: min(460px, 90vw);
+  padding: 0;
+}
+
+.auth-modal::backdrop {
+  background: rgb(15 23 42 / 45%);
+}
+
+.auth-form {
+  display: grid;
+  gap: 0.8rem;
+  padding: 1.2rem;
+}
+
+.auth-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.auth-head h2 {
+  margin: 0;
+}
+
+.auth-close {
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+  background: #f3f4f6;
+}
+
+.auth-description,
+.auth-helper {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.auth-message {
+  margin: 0;
+  min-height: 1.2rem;
+  font-weight: 600;
+}
+
+.auth-message.success {
+  color: var(--success);
+}
+
+.auth-message.error {
+  color: var(--error);
+}
+
+.auth-form label {
+  display: grid;
+  gap: 0.35rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.auth-input {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.6rem;
+  font: inherit;
+}
+
+.auth-actions {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.auth-signout {
+  justify-self: flex-start;
+}
+
+.account-trigger {
+  white-space: nowrap;
+}
+
+.account-modal {
+  width: min(620px, 92vw);
+}
+
+.account-summary {
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--border);
+  background: #f8fafc;
+  border-radius: 10px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.account-progress-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+@media (max-width: 860px) {
+  .account-progress-grid {
+    grid-template-columns: 1fr;
+  }
+}
