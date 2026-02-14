@@ -59,15 +59,19 @@ function initAuthUI() {
     return;
   }
 
-  const authButton = document.createElement('button');
-  authButton.type = 'button';
-  authButton.className = 'secondary auth-trigger';
+  let authButton = navWrap.querySelector('.auth-trigger');
 
-  const ctaLink = navWrap.querySelector('.cta-link');
-  if (ctaLink) {
-    navWrap.insertBefore(authButton, ctaLink);
-  } else {
-    navWrap.appendChild(authButton);
+  if (!authButton) {
+    authButton = document.createElement('button');
+    authButton.type = 'button';
+    authButton.className = 'secondary auth-trigger';
+
+    const ctaLink = navWrap.querySelector('.cta-link');
+    if (ctaLink) {
+      navWrap.insertBefore(authButton, ctaLink);
+    } else {
+      navWrap.appendChild(authButton);
+    }
   }
 
   const authModal = document.createElement('dialog');
