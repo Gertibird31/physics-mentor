@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Physics Mentor · Physics 1</title>
+    <title>Physics Mentor · Course Library</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -15,158 +15,88 @@
   <body>
     <header class="topbar">
       <div class="container nav-wrap">
-        <a class="brand" href="#">Physics Mentor</a>
+        <a class="brand" href="index.html">Physics Mentor</a>
         <nav class="nav-links" aria-label="Main navigation">
-          <a href="#module">Physics 1 Module</a>
-          <a href="#topics">Topics</a>
-          <a href="#practice">Practice</a>
-          <a href="#resources">Resources</a>
+          <a href="#courses">Course library</a>
+          <a href="#focus">Current focus</a>
         </nav>
-        <button class="cta">Start Physics 1</button>
+        <a class="cta-link" href="physics1.html">Open template section</a>
       </div>
     </header>
 
     <main>
-      <section class="hero container" id="module">
+      <section class="hero container" id="courses">
         <div>
-          <p class="eyebrow">Start with High School Physics 1</p>
-          <h1>A topic-first course with guided lessons and instant practice feedback.</h1>
+          <p class="eyebrow">All physics courses in one place</p>
+          <h1>Build mastery across Physics 1, Physics 2, and beyond.</h1>
           <p class="hero-copy">
-            This first module is organized by core Physics 1 topics. Each topic includes a clear
-            learning sequence and a short formative problem where students can submit an answer and
-            receive targeted feedback.
+            Physics Mentor is organized as a full library of physics pathways across multiple
+            courses. In this stage, Physics 1 is serving as the template section while the full
+            multi-course structure stays in place.
           </p>
           <div class="hero-actions">
-            <button class="primary">View full sequence</button>
-            <button class="secondary">Try first practice set</button>
+            <a class="primary link-button" href="physics1.html">Open template (Physics 1)</a>
+            <button class="secondary" disabled>Physics 2 coming soon</button>
           </div>
         </div>
-        <aside class="hero-card" aria-label="Module overview">
-          <h2>Physics 1 roadmap</h2>
-          <p>6 topics · 24 lessons · 42 feedback activities</p>
-          <div class="progress"><span style="width: 22%"></span></div>
-          <small>Currently building Topic 1–2 in detail</small>
+        <aside class="hero-card" aria-label="Program overview">
+          <h2>Program roadmap</h2>
+          <p>Physics 1 · Physics 2 · Modern Physics · AP prep</p>
+          <div class="progress"><span style="width: 30%"></span></div>
+          <small>Current build stage: template development in Physics 1</small>
           <ul>
-            <li>Kinematics foundations</li>
-            <li>Newton's laws and free-body diagrams</li>
-            <li>Energy, momentum, and circular motion</li>
+            <li>Template page is available now (Physics 1)</li>
+            <li>Physics 2 structure is being drafted</li>
+            <li>Additional courses to follow</li>
           </ul>
         </aside>
       </section>
 
-      <section id="topics" class="section container">
+      <section class="section container" id="focus">
         <div class="section-head">
-          <h2>Physics 1 topics and sequence</h2>
-          <a href="#">Download syllabus draft</a>
+          <h2>Course library</h2>
         </div>
 
         <div class="topic-grid">
           <article class="topic-card">
-            <h3>Topic 1 · Kinematics</h3>
-            <p class="topic-goal">Goal: describe motion with position, velocity, and acceleration.</p>
-            <ol>
-              <li>Motion graphs and units</li>
-              <li>Average vs instantaneous velocity</li>
-              <li>Acceleration and constant-acceleration models</li>
-              <li>2D projectile motion</li>
-            </ol>
+            <h3>Physics 1</h3>
+            <p class="topic-goal">Mechanics foundations from motion to momentum.</p>
+            <p>
+              Includes kinematics, forces, energy, and collisions with topic-by-topic learning
+              sequences.
+            </p>
+            <a class="primary link-button" href="physics1.html">View Physics 1 topics</a>
           </article>
 
           <article class="topic-card">
-            <h3>Topic 2 · Dynamics</h3>
-            <p class="topic-goal">Goal: connect motion changes to net force using Newton's laws.</p>
-            <ol>
-              <li>Inertia and Newton's first law</li>
-              <li>Free-body diagrams</li>
-              <li>Applying F = ma in one and two dimensions</li>
-              <li>Friction, tension, and normal force models</li>
-            </ol>
+            <h3>Physics 2</h3>
+            <p class="topic-goal">Electricity, magnetism, circuits, waves, and optics.</p>
+            <p>Planned after Physics 1 core pages are complete.</p>
+            <button class="secondary" disabled>Coming soon</button>
           </article>
 
           <article class="topic-card">
-            <h3>Topic 3 · Energy</h3>
-            <p class="topic-goal">Goal: solve problems with work-energy methods.</p>
-            <ol>
-              <li>Work and kinetic energy</li>
-              <li>Potential energy and conservative forces</li>
-              <li>Energy bar charts and transfer tracking</li>
-              <li>Power and efficiency</li>
-            </ol>
+            <h3>Modern Physics</h3>
+            <p class="topic-goal">Atomic, quantum, and nuclear concepts.</p>
+            <p>Future module in the long-term roadmap.</p>
+            <button class="secondary" disabled>Coming soon</button>
           </article>
 
           <article class="topic-card">
-            <h3>Topic 4 · Momentum</h3>
-            <p class="topic-goal">Goal: analyze collisions and interactions in closed systems.</p>
-            <ol>
-              <li>Impulse and momentum change</li>
-              <li>Conservation of momentum</li>
-              <li>1D elastic and inelastic collisions</li>
-              <li>Center-of-mass reasoning</li>
-            </ol>
+            <h3>Exam Review Tracks</h3>
+            <p class="topic-goal">AP/IB style mixed-topic review and diagnostics.</p>
+            <p>Planned extension for test-focused practice.</p>
+            <button class="secondary" disabled>Coming soon</button>
           </article>
-        </div>
-      </section>
-
-      <section id="practice" class="section alt-bg">
-        <div class="container">
-          <div class="section-head">
-            <h2>Topic check-ins (instant feedback)</h2>
-            <a href="#">Open full problem bank</a>
-          </div>
-
-          <div class="practice-grid">
-            <article class="practice-card" data-answer="20" data-unit="m/s">
-              <h3>Kinematics check</h3>
-              <p>
-                A car increases speed from 5 m/s to 25 m/s in 1.0 s. What is its acceleration?
-              </p>
-              <label>
-                Your answer
-                <input type="number" step="any" aria-label="Kinematics answer" />
-              </label>
-              <button class="primary check-answer">Check answer</button>
-              <p class="feedback" aria-live="polite"></p>
-            </article>
-
-            <article class="practice-card" data-answer="30" data-unit="N">
-              <h3>Dynamics check</h3>
-              <p>A 6 kg object accelerates at 5 m/s². What is the net force magnitude?</p>
-              <label>
-                Your answer
-                <input type="number" step="any" aria-label="Dynamics answer" />
-              </label>
-              <button class="primary check-answer">Check answer</button>
-              <p class="feedback" aria-live="polite"></p>
-            </article>
-
-            <article class="practice-card" data-answer="147" data-unit="J">
-              <h3>Energy check</h3>
-              <p>How much gravitational potential energy does a 3 kg mass gain when lifted 5 m?</p>
-              <label>
-                Your answer
-                <input type="number" step="any" aria-label="Energy answer" />
-              </label>
-              <button class="primary check-answer">Check answer</button>
-              <p class="feedback" aria-live="polite"></p>
-            </article>
-          </div>
         </div>
       </section>
     </main>
 
-    <footer id="resources" class="footer">
+    <footer class="footer">
       <div class="container footer-wrap">
         <div>
           <p class="brand">Physics Mentor</p>
-          <p>Focused module design for high school Physics 1.</p>
-        </div>
-        <div>
-          <h4>Teacher resources</h4>
-          <ul>
-            <li><a href="#">Topic pacing guide</a></li>
-            <li><a href="#">Problem-writing rubric</a></li>
-            <li><a href="#">Feedback sentence stems</a></li>
-          </ul>
+          <p>Multi-course physics learning platform with a Physics 1 template in active development.</p>
         </div>
       </div>
     </footer>

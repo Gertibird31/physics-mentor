@@ -3,6 +3,6 @@
 A lightweight prototype for a Physics Mentor experience.
 
 Current focus:
-- High school Physics 1 module structure by topic
-- Pedagogical lesson sequence within each topic
-- Practice check-ins with immediate answer feedback
+- Multi-course physics library (Physics 1, Physics 2, and more)
+- Dedicated template page (currently Physics 1) with topic outlines and short descriptions
+- Incremental rollout of interactive practice in future updates
