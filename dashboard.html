@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Physics Mentor · Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="dashboard">
+    <header class="topbar">
+      <div class="container nav-wrap">
+        <a class="brand" href="dashboard.html">Physics Mentor</a>
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="#courses">Courses</a>
+          <a href="#progress">Progress</a>
+        </nav>
+        <button class="secondary auth-trigger" type="button">Account</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero container">
+        <div>
+          <p class="eyebrow">Your learning dashboard</p>
+          <h1 id="dashboardGreeting">Welcome back.</h1>
+          <p class="hero-copy" id="dashboardGoal">
+            Update your account hub to set a study goal and weekly plan.
+          </p>
+          <div class="hero-actions">
+            <button class="primary account-trigger" type="button">Open account hub</button>
+          </div>
+        </div>
+        <aside class="hero-card" aria-label="Weekly focus">
+          <h2>This week</h2>
+          <p id="weeklyTargetSummary">Target: 0 study hours</p>
+          <p id="streakSummary">Current streak: 0 days</p>
+        </aside>
+      </section>
+
+      <section class="section container" id="courses">
+        <div class="section-head">
+          <h2>Course library</h2>
+        </div>
+
+        <div class="topic-grid">
+          <article class="topic-card topic-mastery-card">
+            <h3>Physics 1</h3>
+            <p class="mastery-label">Mastery: <strong id="physics1MasteryLabel">0%</strong></p>
+            <div class="progress"><span id="physics1ProgressFill" style="width: 0%"></span></div>
+            <p>Mechanics foundations from motion to momentum.</p>
+            <a class="primary link-button" href="physics1.html">Continue Physics 1</a>
+          </article>
+
+          <article class="topic-card topic-mastery-card">
+            <h3>Physics 2</h3>
+            <p class="mastery-label">Mastery: <strong id="physics2MasteryLabel">0%</strong></p>
+            <div class="progress"><span id="physics2ProgressFill" style="width: 0%"></span></div>
+            <p>Electricity, magnetism, circuits, waves, and optics.</p>
+            <button class="secondary" disabled>Coming soon</button>
+          </article>
+        </div>
+      </section>
+
+      <section class="section container" id="progress">
+        <div class="section-head">
+          <h2>Personal notes</h2>
+        </div>
+        <article class="topic-card">
+          <p id="notesSummary">No notes saved yet. Open Account hub to add reminders and weak areas.</p>
+        </article>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-wrap">
+        <div>
+          <p class="brand">Physics Mentor</p>
+          <p>Your data is loaded from your signed-in account profile.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      window.PHYSICS_MENTOR_AUTH = {
+        firebaseApiKey: "AIzaSyCrv-uGbKtwQ376_dRaLYmJgsLxCm22PNY"
+      };
+    </script>
+    <script src="script.js"></script>
+  </body>
+</html>
