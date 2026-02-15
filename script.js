@@ -41,6 +41,9 @@ problemCards.forEach((card) => {
 
 const AUTH_STORAGE_KEY = 'physicsMentorAuthSession';
 const PROFILE_STORAGE_KEY = 'physicsMentorAccountProfiles';
+const LANDING_PAGE = 'landing';
+const DASHBOARD_PAGE = 'dashboard';
+const pageType = document.body?.dataset?.page || '';
 const authConfig = window.PHYSICS_MENTOR_AUTH || {};
 const firebaseApiKey = authConfig.firebaseApiKey || '';
 const hasFirebaseApiKey = Boolean(firebaseApiKey);
@@ -144,25 +147,34 @@ function initAuthUI() {
     className: 'auth-trigger',
     fallbackText: 'Sign in with email',
   });
+  const authTriggers = document.querySelectorAll('.auth-trigger');
 
-  const accountButton = findOrCreateNavButton(navWrap, {
-    className: 'account-trigger',
-    fallbackText: 'Account hub',
-  });
+  const accountButton =
+    pageType === DASHBOARD_PAGE
+      ? findOrCreateNavButton(navWrap, {
+          className: 'account-trigger',
+          fallbackText: 'Account hub',
+        })
+      : null;
+  const accountTriggers = document.querySelectorAll('.account-trigger');
 
   const authModal = buildAuthModal();
-  const accountModal = buildAccountModal();
-  document.body.append(authModal, accountModal);
+  const accountModal = pageType === DASHBOARD_PAGE ? buildAccountModal() : null;
+  if (accountModal) {
+    document.body.append(authModal, accountModal);
+  } else {
+    document.body.append(authModal);
+  }
 
   const authForm = authModal.querySelector('.auth-form');
   const authMessage = authModal.querySelector('.auth-message');
   const authCloseButton = authModal.querySelector('.auth-close');
   const signOutButton = authModal.querySelector('.auth-signout');
 
-  const accountCloseButton = accountModal.querySelector('.account-close');
-  const accountMessage = accountModal.querySelector('.account-message');
-  const accountForm = accountModal.querySelector('.account-form');
-  const accountSummary = accountModal.querySelector('.account-summary');
+  const accountCloseButton = accountModal?.querySelector('.account-close');
+  const accountMessage = accountModal?.querySelector('.account-message');
+  const accountForm = accountModal?.querySelector('.account-form');
+  const accountSummary = accountModal?.querySelector('.account-summary');
 
   authElements = {
     authButton,
@@ -177,23 +189,31 @@ function initAuthUI() {
     accountSummary,
   };
 
-  authButton.addEventListener('click', () => {
-    setAuthMessage('');
-    authModal.showModal();
-    renderAuthState();
+  authTriggers.forEach((trigger) => {
+    trigger.addEventListener('click', () => {
+      setAuthMessage('');
+      authModal.showModal();
+      renderAuthState();
+    });
   });
 
   authCloseButton.addEventListener('click', () => {
     authModal.close();
   });
 
-  accountButton.addEventListener('click', () => {
-    setAccountMessage('');
-    populateAccountForm();
-    accountModal.showModal();
+  accountTriggers.forEach((trigger) => {
+    trigger.addEventListener('click', () => {
+      if (!accountModal) {
+        return;
+      }
+
+      setAccountMessage('');
+      populateAccountForm();
+      accountModal.showModal();
+    });
   });
 
-  accountCloseButton.addEventListener('click', () => {
+  accountCloseButton?.addEventListener('click', () => {
     accountModal.close();
   });
 
@@ -255,6 +275,10 @@ function initAuthUI() {
     setAuthMessage(successMessage);
     populateAccountForm();
     renderAuthState();
+
+    if (pageType === LANDING_PAGE) {
+      window.location.href = 'dashboard.html';
+    }
   });
 
   signOutButton.addEventListener('click', () => {
@@ -264,7 +288,7 @@ function initAuthUI() {
     renderAuthState();
   });
 
-  accountForm.addEventListener('submit', (event) => {
+  accountForm?.addEventListener('submit', (event) => {
     event.preventDefault();
 
     if (!authSession?.email) {
@@ -404,8 +428,15 @@ function renderAuthState() {
   const { authButton, accountButton, signOutButton } = authElements;
   const isSignedIn = Boolean(authSession?.email);
 
+  if (pageType === DASHBOARD_PAGE && !isSignedIn) {
+    window.location.href = 'index.html';
+    return;
+  }
+
   authButton.textContent = isSignedIn ? authSession.email : 'Sign in with email';
-  accountButton.textContent = isSignedIn ? 'Account hub' : 'Account hub (sign in first)';
+  if (accountButton) {
+    accountButton.textContent = isSignedIn ? 'Account hub' : 'Account hub (sign in first)';
+  }
   signOutButton.style.display = isSignedIn ? 'inline-flex' : 'none';
 
   if (!isSignedIn) {
@@ -413,6 +444,8 @@ function renderAuthState() {
   } else {
     populateAccountForm();
   }
+
+  updateDashboardView();
 }
 
 function populateAccountForm() {
@@ -475,6 +508,65 @@ function setAccountSummary(html) {
   }
 
   authElements.accountSummary.innerHTML = html;
+}
+
+function updateDashboardView() {
+  if (pageType !== DASHBOARD_PAGE || !authSession?.email) {
+    return;
+  }
+
+  const profile = ensureAccountProfile(authSession.email);
+  const displayName = profile.displayName || authSession.email;
+
+  const greeting = document.getElementById('dashboardGreeting');
+  const goal = document.getElementById('dashboardGoal');
+  const weeklyTargetSummary = document.getElementById('weeklyTargetSummary');
+  const streakSummary = document.getElementById('streakSummary');
+  const notesSummary = document.getElementById('notesSummary');
+  const physics1MasteryLabel = document.getElementById('physics1MasteryLabel');
+  const physics2MasteryLabel = document.getElementById('physics2MasteryLabel');
+  const physics1ProgressFill = document.getElementById('physics1ProgressFill');
+  const physics2ProgressFill = document.getElementById('physics2ProgressFill');
+
+  if (greeting) {
+    greeting.textContent = `Welcome back, ${displayName}.`;
+  }
+
+  if (goal) {
+    goal.textContent = profile.studyGoal
+      ? `Current goal: ${profile.studyGoal}`
+      : 'Add a study goal in Account hub to personalize your dashboard.';
+  }
+
+  if (weeklyTargetSummary) {
+    weeklyTargetSummary.textContent = `Target: ${profile.weeklyTargetHours || 0} study hours`;
+  }
+
+  if (streakSummary) {
+    streakSummary.textContent = `Current streak: ${profile.currentStreak || 0} days`;
+  }
+
+  if (notesSummary) {
+    notesSummary.textContent = profile.notes
+      ? profile.notes
+      : 'No notes saved yet. Open Account hub to add reminders and weak areas.';
+  }
+
+  if (physics1MasteryLabel) {
+    physics1MasteryLabel.textContent = `${profile.physics1Mastery || 0}%`;
+  }
+
+  if (physics2MasteryLabel) {
+    physics2MasteryLabel.textContent = `${profile.physics2Mastery || 0}%`;
+  }
+
+  if (physics1ProgressFill) {
+    physics1ProgressFill.style.width = `${profile.physics1Mastery || 0}%`;
+  }
+
+  if (physics2ProgressFill) {
+    physics2ProgressFill.style.width = `${profile.physics2Mastery || 0}%`;
+  }
 }
 
 

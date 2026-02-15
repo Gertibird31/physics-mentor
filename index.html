@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Physics Mentor · Course Library</title>
+    <title>Physics Mentor · Welcome</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -12,84 +12,41 @@
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
+  <body data-page="landing">
     <header class="topbar">
       <div class="container nav-wrap">
         <a class="brand" href="index.html">Physics Mentor</a>
         <nav class="nav-links" aria-label="Main navigation">
-          <a href="#courses">Course library</a>
-          <a href="#focus">Current focus</a>
+          <a href="#about">About</a>
+          <a href="#how-it-works">How it works</a>
         </nav>
-                <button class="secondary auth-trigger" type="button">Sign in with email</button>
-<a class="cta-link" href="physics1.html">Open template section</a>
+        <button class="secondary auth-trigger" type="button">Sign in with email</button>
       </div>
     </header>
 
     <main>
-      <section class="hero container" id="courses">
+      <section class="hero container" id="about">
         <div>
-          <p class="eyebrow">All physics courses in one place</p>
-          <h1>Build mastery across Physics 1, Physics 2, and beyond.</h1>
+          <p class="eyebrow">Personalized physics coaching</p>
+          <h1>Learn physics with a study plan that adapts to your progress.</h1>
           <p class="hero-copy">
-            Physics Mentor is organized as a full library of physics pathways across multiple
-            courses. In this stage, Physics 1 is serving as the template section while the full
-            multi-course structure stays in place.
+            Physics Mentor helps students organize coursework, monitor mastery, and keep momentum
+            through focused practice. Sign in to unlock your personal dashboard, course roadmap,
+            and progress tracking.
           </p>
           <div class="hero-actions">
-            <a class="primary link-button" href="physics1.html">Open template (Physics 1)</a>
-            <button class="secondary" disabled>Physics 2 coming soon</button>
+            <button class="primary auth-trigger" type="button">Log in to continue</button>
           </div>
         </div>
-        <aside class="hero-card" aria-label="Program overview">
-          <h2>Program roadmap</h2>
-          <p>Physics 1 · Physics 2 · Modern Physics · AP prep</p>
-          <div class="progress"><span style="width: 30%"></span></div>
-          <small>Current build stage: template development in Physics 1</small>
+        <aside class="hero-card" aria-label="Platform overview" id="how-it-works">
+          <h2>What you can do after login</h2>
           <ul>
-            <li>Template page is available now (Physics 1)</li>
-            <li>Physics 2 structure is being drafted</li>
-            <li>Additional courses to follow</li>
+            <li>View your course library and current learning targets</li>
+            <li>Track mastery levels with saved progress bars</li>
+            <li>Store account notes and weekly study goals</li>
           </ul>
+          <small>Most learning content is available only inside your authenticated dashboard.</small>
         </aside>
-      </section>
-
-      <section class="section container" id="focus">
-        <div class="section-head">
-          <h2>Course library</h2>
-        </div>
-
-        <div class="topic-grid">
-          <article class="topic-card">
-            <h3>Physics 1</h3>
-            <p class="topic-goal">Mechanics foundations from motion to momentum.</p>
-            <p>
-              Includes kinematics, forces, energy, and collisions with topic-by-topic learning
-              sequences.
-            </p>
-            <a class="primary link-button" href="physics1.html">View Physics 1 topics</a>
-          </article>
-
-          <article class="topic-card">
-            <h3>Physics 2</h3>
-            <p class="topic-goal">Electricity, magnetism, circuits, waves, and optics.</p>
-            <p>Planned after Physics 1 core pages are complete.</p>
-            <button class="secondary" disabled>Coming soon</button>
-          </article>
-
-          <article class="topic-card">
-            <h3>Modern Physics</h3>
-            <p class="topic-goal">Atomic, quantum, and nuclear concepts.</p>
-            <p>Future module in the long-term roadmap.</p>
-            <button class="secondary" disabled>Coming soon</button>
-          </article>
-
-          <article class="topic-card">
-            <h3>Exam Review Tracks</h3>
-            <p class="topic-goal">AP/IB style mixed-topic review and diagnostics.</p>
-            <p>Planned extension for test-focused practice.</p>
-            <button class="secondary" disabled>Coming soon</button>
-          </article>
-        </div>
       </section>
     </main>
 
@@ -97,17 +54,16 @@
       <div class="container footer-wrap">
         <div>
           <p class="brand">Physics Mentor</p>
-          <p>Multi-course physics learning platform with a Physics 1 template in active development.</p>
+          <p>Sign in to access your personalized courses and progress dashboard.</p>
         </div>
       </div>
     </footer>
-    
+
     <script>
       window.PHYSICS_MENTOR_AUTH = {
         firebaseApiKey: "AIzaSyCrv-uGbKtwQ376_dRaLYmJgsLxCm22PNY"
       };
     </script>
     <script src="script.js"></script>
-
-</body>
+  </body>
 </html>
