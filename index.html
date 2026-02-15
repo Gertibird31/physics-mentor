@@ -101,7 +101,35 @@
         </div>
       </div>
     </footer>
+    
+    <!-- In your HTML file, before script.js -->
+    <script type="module">
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyCrv-uGbKtwQ376_dRaLYmJgsLxCm22PNY",
+        authDomain: "physics-mentor-124a3.firebaseapp.com",
+        projectId: "physics-mentor-124a3",
+        storageBucket: "physics-mentor-124a3.firebasestorage.app",
+        messagingSenderId: "1057425126171",
+        appId: "1:1057425126171:web:03e0b67dadb7f0cb0d99be"
+      };
 
+      // Initialize Firebase
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+      import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+
+      // Expose auth functions globally if script.js is not a module
+      // If script.js is a module, you can directly import these in script.js
+      window.firebaseAuth = auth;
+      window.onAuthStateChanged = onAuthStateChanged;
+      window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
+      window.signInWithEmailAndPassword = signInWithEmailAndPassword;
+      window.signOut = signOut;
+    </script>
     <script src="script.js"></script>
-  </body>
+
+</body>
 </html>

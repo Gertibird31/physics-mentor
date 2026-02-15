@@ -38,21 +38,173 @@ problemCards.forEach((card) => {
   });
 });
 
-const AUTH_STORAGE_KEY = 'physicsMentorAuthSession';
-const PROFILE_STORAGE_KEY = 'physicsMentorAccountProfiles';
-const authConfig = window.PHYSICS_MENTOR_AUTH ?? {
-  firebaseApiKey: 'REPLACE_WITH_FIREBASE_WEB_API_KEY',
-};
 
-const hasFirebaseApiKey =
-  typeof authConfig.firebaseApiKey === 'string' &&
-  authConfig.firebaseApiKey.trim() !== '' &&
-  !authConfig.firebaseApiKey.startsWith('REPLACE_WITH_');
-
-let authSession = loadSession();
+let authSession = null;
 let authElements;
 
 initAuthUI();
+
+
+// NEW: Firebase Auth Listener
+window.onAuthStateChanged(window.firebaseAuth, (user) => {
+  if (user) {
+    // User is signed in
+    authSession = {
+      email: user.email,
+      // Firebase SDK handles ID token, refresh token, and expiry automatically
+      // You can get current token with user.getIdToken() if needed
+    };
+    ensureAccountProfile(user.email);
+    console.log("User signed in:", user.email);
+  } else {
+    // User is signed out
+    authSession = null;
+    console.log("User signed out");
+  }
+  renderAuthState(); // Update UI based on new auth state
+});
+
+
+function initAuthUI() {
+  // ... (existing code for finding/creating nav buttons, building modals)
+
+  // ... (existing variable assignments for authElements)
+
+  authButton.addEventListener('click', () => {
+    setAuthMessage('');
+    authModal.showModal();
+    // renderAuthState is now called by onAuthStateChanged, so no need here if we want immediate feedback
+  });
+
+  // ... (authCloseButton, accountButton, accountCloseButton event listeners)
+
+  authForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const submitter = event.submitter;
+    const mode = submitter?.dataset.mode;
+    if (!mode) {
+      return;
+    }
+
+    // Removed the hasFirebaseApiKey check as it's handled by Firebase init
+
+    const formData = new FormData(authForm);
+    const email = String(formData.get('email') || '').trim();
+    const password = String(formData.get('password') || '');
+
+    if (!email || !password) {
+      setAuthMessage('Enter both email and password.', true);
+      return;
+    }
+
+    submitter.disabled = true;
+    setAuthMessage(mode === 'signup' ? 'Creating your account…' : 'Signing you in…');
+
+    try {
+      if (mode === 'signup') {
+        const userCredential = await window.createUserWithEmailAndPassword(window.firebaseAuth, email, password);
+        setAuthMessage(`Account created. You are signed in as ${userCredential.user.email}.`);
+      } else { // mode === 'signin'
+        const userCredential = await window.signInWithEmailAndPassword(window.firebaseAuth, email, password);
+        setAuthMessage(`Welcome back, ${userCredential.user.email}.`);
+      }
+      authModal.close(); // Close modal on success
+    } catch (error) {
+      // Firebase SDK returns error objects
+      const errorMessage = mapFirebaseError(error.code);
+      setAuthMessage(errorMessage, true);
+    } finally {
+      submitter.disabled = false;
+    }
+    // renderAuthState will be called by the onAuthStateChanged listener
+  });
+
+  signOutButton.addEventListener('click', async () => {
+    try {
+      await window.signOut(window.firebaseAuth);
+      setAuthMessage('You have been signed out.');
+      // authSession will be set to null by the onAuthStateChanged listener
+      // localStorage.removeItem(AUTH_STORAGE_KEY); // No longer needed for Firebase session
+    } catch (error) {
+      console.error("Sign out error:", error);
+      setAuthMessage('Failed to sign out. Please try again.', true);
+    }
+  });
+
+  // ... (accountForm event listener and other functions remain similar)
+}
+
+// NEW: Helper to map Firebase errors to user-friendly messages
+function mapFirebaseError(errorCode) {
+  switch (errorCode) {
+    case 'auth/email-already-in-use':
+      return 'An account with that email already exists. Try signing in instead.';
+    case 'auth/invalid-email':
+      return 'Please enter a valid email address.';
+    case 'auth/operation-not-allowed':
+      return 'Email/password authentication is not enabled. Contact support.';
+    case 'auth/weak-password':
+      return 'Password is too weak. Use at least 6 characters.';
+    case 'auth/user-not-found':
+      return 'No account exists for that email. Try creating an account first.';
+    case 'auth/wrong-password':
+      return 'Incorrect password. Please try again.';
+    case 'auth/user-disabled':
+      return 'This account is disabled. Contact support.';
+    default:
+      return 'Authentication failed. Please try again.';
+  }
+}
+
+
+function renderAuthState() {
+  if (!authElements) {
+    return;
+  }
+
+  const { authButton, accountButton, signOutButton } = authElements;
+  const isSignedIn = Boolean(window.firebaseAuth.currentUser); // Check current user directly from SDK
+
+  authButton.textContent = isSignedIn ? window.firebaseAuth.currentUser.email : 'Sign in with email';
+  accountButton.textContent = isSignedIn ? 'Account hub' : 'Account hub (sign in first)';
+  signOutButton.style.display = isSignedIn ? 'inline-flex' : 'none';
+
+  if (!isSignedIn) {
+    setAccountSummary('Sign in to create and track your account profile, goals, and progress.');
+  } else {
+    populateAccountForm();
+  }
+}
+
+// In ensureAccountProfile and saveAccountProfile, use the email from window.firebaseAuth.currentUser.email
+function ensureAccountProfile(email) {
+  const allProfiles = loadAllProfiles();
+
+  if (!allProfiles[email]) {
+    allProfiles[email] = {
+      displayName: '',
+      studyGoal: '',
+      weeklyTargetHours: 4,
+      physics1Mastery: 0,
+      physics2Mastery: 0,
+      currentStreak: 0,
+      notes: '',
+      updatedAt: '',
+    };
+
+    localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(allProfiles));
+  }
+
+  return allProfiles[email];
+}
+
+function saveAccountProfile(email, profile) {
+  const allProfiles = loadAllProfiles();
+  allProfiles[email] = profile;
+  localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(allProfiles));
+}
+
 
 function initAuthUI() {
   const navWrap = document.querySelector('.nav-wrap');
@@ -397,29 +549,6 @@ function setAccountSummary(html) {
   authElements.accountSummary.innerHTML = html;
 }
 
-function loadSession() {
-  const raw = localStorage.getItem(AUTH_STORAGE_KEY);
-  if (!raw) {
-    return null;
-  }
-
-  try {
-    const parsed = JSON.parse(raw);
-    if (!parsed?.email || !parsed?.expiresAt || parsed.expiresAt <= Date.now()) {
-      localStorage.removeItem(AUTH_STORAGE_KEY);
-      return null;
-    }
-
-    return parsed;
-  } catch {
-    localStorage.removeItem(AUTH_STORAGE_KEY);
-    return null;
-  }
-}
-
-function saveSession(session) {
-  localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(session));
-}
 
 function loadAllProfiles() {
   const raw = localStorage.getItem(PROFILE_STORAGE_KEY);
@@ -462,39 +591,3 @@ function saveAccountProfile(email, profile) {
   localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(allProfiles));
 }
 
-async function callFirebaseAuth(endpoint, payload) {
-  const authUrl = `https://identitytoolkit.googleapis.com/v1/${endpoint}?key=${authConfig.firebaseApiKey}`;
-  const response = await fetch(authUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-  });
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    return {
-      ok: false,
-      message: mapAuthError(data?.error?.message),
-    };
-  }
-
-  return {
-    ok: true,
-    data,
-  };
-}
-
-function mapAuthError(code) {
-  const authErrors = {
-    EMAIL_NOT_FOUND: 'No account exists for that email. Try creating an account first.',
-    INVALID_PASSWORD: 'Incorrect password. Please try again.',
-    USER_DISABLED: 'This account is disabled. Contact support.',
-    EMAIL_EXISTS: 'An account with that email already exists. Try signing in instead.',
-    WEAK_PASSWORD: 'Password is too weak. Use at least 6 characters.',
-    OPERATION_NOT_ALLOWED: 'Email/password auth is not enabled in your Firebase project.',
-    INVALID_EMAIL: 'Please enter a valid email address.',
-  };
-
-  return authErrors[code] || 'Authentication failed. Please try again.';
-}
