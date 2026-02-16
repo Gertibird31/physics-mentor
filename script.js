@@ -610,3 +610,333 @@ function saveAccountProfile(email, profile) {
   allProfiles[email] = profile;
   localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(allProfiles));
 }
+
+initKinematicsPage();
+
+function initKinematicsPage() {
+  const root = document.querySelector('[data-kinematics-root]');
+  if (!root) {
+    return;
+  }
+
+  const STORAGE_KEY = 'physicsMentorKinematicsProgressV1';
+  const ideaWeight = 30;
+  const passStreakTarget = 5;
+  const progressLabel = root.querySelector('[data-kinematics-progress-label]');
+  const progressBar = root.querySelector('[data-kinematics-progress-bar]');
+  const finalStatusLabel = root.querySelector('[data-final-status]');
+
+  const quizBanks = {
+    'vectors-motion': [
+      { prompt: 'If x_i = 2 m and x_f = -5 m, what is displacement Δx (m)?', answer: '-7' },
+      { prompt: 'A runner goes 40 m east then 10 m west. What is displacement (m, east positive)?', answer: '30' },
+      { prompt: 'On a position-time graph, what does the slope represent?', answer: 'velocity' },
+      { prompt: 'A stationary object has what velocity (m/s)?', answer: '0' },
+      { prompt: 'If velocity is constant and positive, the x-t graph is a line with what kind of slope?', answer: 'positive' },
+      { prompt: 'Distance is a scalar or vector?', answer: 'scalar' },
+      { prompt: 'Displacement is final position minus what?', answer: 'initial position' },
+    ],
+    'kinematics-1d': [
+      { prompt: 'An object starts at rest and accelerates at 2 m/s² for 4 s. Final velocity (m/s)?', answer: '8' },
+      { prompt: 'A car slows from 20 m/s to 8 m/s in 3 s. Acceleration (m/s²)?', answer: '-4' },
+      { prompt: 'At constant acceleration, v = v0 + at. What is v0 called?', answer: 'initial velocity' },
+      { prompt: 'If v is m/s and t is s, then vt has units of what?', answer: 'm' },
+      { prompt: 'An object with a = 0 has what type of velocity?', answer: 'constant' },
+      { prompt: 'For free fall near Earth (up positive), acceleration is about what value (m/s²)?', answer: '-9.8' },
+      { prompt: 'If acceleration and velocity have opposite signs, speed is doing what?', answer: 'decreasing' },
+    ],
+    'projectile-2d': [
+      { prompt: 'For launch speed v0 at angle θ from horizontal, horizontal component is v0 cosθ or v0 sinθ?', answer: 'v0 cosθ' },
+      { prompt: 'Ignoring air resistance, horizontal acceleration in projectile motion is what (m/s²)?', answer: '0' },
+      { prompt: 'Ignoring air resistance, vertical acceleration is approximately what (m/s², up positive)?', answer: '-9.8' },
+      { prompt: 'A projectile launched horizontally has initial vertical velocity equal to what?', answer: '0' },
+      { prompt: 'Time of flight for same launch/landing height depends on horizontal or vertical motion?', answer: 'vertical' },
+      { prompt: 'Range can be found using x = v_x * what?', answer: 'time' },
+      { prompt: 'At the top of trajectory, vertical velocity is what?', answer: '0' },
+    ],
+    'final-exam': [
+      { prompt: 'A cyclist moves from x = -3 m to x = 11 m. Displacement (m)?', answer: '14' },
+      { prompt: 'A ball at rest accelerates at 3 m/s² for 5 s. Final speed (m/s)?', answer: '15' },
+      { prompt: 'A car with v0 = 25 m/s and a = -5 m/s² stops after how many seconds?', answer: '5' },
+      { prompt: 'Launch speed 20 m/s at 30°. Initial vertical component (m/s)?', answer: '10' },
+      { prompt: 'For projectile motion without drag, horizontal velocity is constant or changing?', answer: 'constant' },
+      { prompt: 'Slope of a velocity-time graph gives what?', answer: 'acceleration' },
+    ],
+  };
+
+  let state = loadState();
+  let activeQuizId = null;
+  let quizOrder = [];
+  let quizPointer = 0;
+
+  const modal = createQuizModal();
+  document.body.append(modal);
+
+  root.querySelectorAll('[data-quiz-launch]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const quizId = button.dataset.quizLaunch;
+      if (!quizId || !quizBanks[quizId]) {
+        return;
+      }
+
+      launchQuiz(quizId);
+    });
+  });
+
+  render();
+
+  function loadState() {
+    const fallback = {
+      passedIdeas: {
+        'vectors-motion': false,
+        'kinematics-1d': false,
+        'projectile-2d': false,
+      },
+      finalExamPassed: false,
+    };
+
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) {
+      return fallback;
+    }
+
+    try {
+      const parsed = JSON.parse(raw);
+      return {
+        passedIdeas: {
+          'vectors-motion': Boolean(parsed?.passedIdeas?.['vectors-motion']),
+          'kinematics-1d': Boolean(parsed?.passedIdeas?.['kinematics-1d']),
+          'projectile-2d': Boolean(parsed?.passedIdeas?.['projectile-2d']),
+        },
+        finalExamPassed: Boolean(parsed?.finalExamPassed),
+      };
+    } catch {
+      return fallback;
+    }
+  }
+
+  function saveState() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  function launchQuiz(quizId) {
+    activeQuizId = quizId;
+    quizOrder = shuffle([...quizBanks[quizId]]);
+    quizPointer = 0;
+
+    const heading = modal.querySelector('[data-quiz-title]');
+    const note = modal.querySelector('[data-quiz-note]');
+    const streak = modal.querySelector('[data-quiz-streak]');
+    const feedback = modal.querySelector('[data-quiz-feedback]');
+    const input = modal.querySelector('[data-quiz-input]');
+
+    heading.textContent =
+      quizId === 'final-exam' ? 'Final Exam: one question at a time' : 'Practice popup: one question at a time';
+    note.textContent =
+      quizId === 'final-exam'
+        ? 'Answer every question correctly to score 100% and pass the section final exam.'
+        : `Get ${passStreakTarget} correct in a row to pass this lesson.`;
+    streak.textContent = quizId === 'final-exam' ? 'Score: 0%' : 'Current streak: 0';
+    feedback.textContent = '';
+    feedback.className = 'quiz-feedback';
+    input.value = '';
+
+    renderCurrentQuestion();
+    modal.showModal();
+  }
+
+  function renderCurrentQuestion() {
+    const promptEl = modal.querySelector('[data-quiz-prompt]');
+    if (!activeQuizId) {
+      promptEl.textContent = '';
+      return;
+    }
+
+    const currentQuestion = quizOrder[quizPointer];
+    promptEl.textContent = currentQuestion.prompt;
+  }
+
+  function createQuizModal() {
+    const quizModal = document.createElement('dialog');
+    quizModal.className = 'quiz-modal';
+    quizModal.innerHTML = `
+      <form class="quiz-form" method="dialog">
+        <div class="auth-head">
+          <h3 data-quiz-title>Practice popup: one question at a time</h3>
+          <button type="button" class="auth-close" data-quiz-close>Close</button>
+        </div>
+        <p class="quiz-note" data-quiz-note></p>
+        <p class="mastery-label" data-quiz-streak></p>
+        <h4 data-quiz-prompt></h4>
+        <input class="quiz-input" data-quiz-input type="text" placeholder="Type your answer" autocomplete="off" />
+        <p class="quiz-feedback" data-quiz-feedback></p>
+        <div class="quiz-actions">
+          <button type="button" class="primary" data-quiz-submit>Submit answer</button>
+          <button type="button" class="secondary" data-quiz-skip>Skip question</button>
+        </div>
+      </form>
+    `;
+
+    quizModal.querySelector('[data-quiz-close]').addEventListener('click', () => {
+      quizModal.close();
+    });
+
+    quizModal.querySelector('[data-quiz-submit]').addEventListener('click', () => {
+      handleSubmit();
+    });
+
+    quizModal.querySelector('[data-quiz-skip]').addEventListener('click', () => {
+      handleSkip();
+    });
+
+    return quizModal;
+  }
+
+  function handleSubmit() {
+    if (!activeQuizId) {
+      return;
+    }
+
+    const input = modal.querySelector('[data-quiz-input]');
+    const feedback = modal.querySelector('[data-quiz-feedback]');
+    const streak = modal.querySelector('[data-quiz-streak]');
+    const guess = normalize(input.value);
+
+    if (!guess) {
+      feedback.textContent = 'Enter an answer first.';
+      feedback.className = 'quiz-feedback incorrect';
+      return;
+    }
+
+    const currentQuestion = quizOrder[quizPointer];
+    const expected = normalize(currentQuestion.answer);
+    const isCorrect = guess === expected;
+
+    if (activeQuizId === 'final-exam') {
+      const total = quizOrder.length;
+      const currentCorrect = Number(streak.dataset.correct || 0);
+      const nextCorrect = isCorrect ? currentCorrect + 1 : currentCorrect;
+      streak.dataset.correct = String(nextCorrect);
+
+      const scorePercent = Math.round((nextCorrect / total) * 100);
+      streak.textContent = `Score: ${scorePercent}%`;
+
+      if (isCorrect) {
+        feedback.textContent = 'Correct. Next final exam question.';
+        feedback.className = 'quiz-feedback correct';
+      } else {
+        feedback.textContent = `Not quite. Correct answer: ${currentQuestion.answer}`;
+        feedback.className = 'quiz-feedback incorrect';
+      }
+
+      quizPointer += 1;
+      input.value = '';
+
+      if (quizPointer >= total) {
+        finishFinalExam(nextCorrect, total, feedback);
+        return;
+      }
+
+      renderCurrentQuestion();
+      return;
+    }
+
+    const currentStreak = Number(streak.dataset.streak || 0);
+    const nextStreak = isCorrect ? currentStreak + 1 : 0;
+    streak.dataset.streak = String(nextStreak);
+    streak.textContent = `Current streak: ${nextStreak}`;
+
+    if (isCorrect) {
+      feedback.textContent = 'Correct. Keep the streak alive.';
+      feedback.className = 'quiz-feedback correct';
+    } else {
+      feedback.textContent = `Incorrect. Correct answer: ${currentQuestion.answer}. Streak reset.`;
+      feedback.className = 'quiz-feedback incorrect';
+    }
+
+    input.value = '';
+    quizPointer = (quizPointer + 1) % quizOrder.length;
+    renderCurrentQuestion();
+
+    if (nextStreak >= passStreakTarget) {
+      state.passedIdeas[activeQuizId] = true;
+      saveState();
+      render();
+      feedback.textContent = 'You passed this lesson! Progress updated.';
+      feedback.className = 'quiz-feedback correct';
+    }
+  }
+
+  function handleSkip() {
+    if (!activeQuizId) {
+      return;
+    }
+
+    const feedback = modal.querySelector('[data-quiz-feedback]');
+    const streak = modal.querySelector('[data-quiz-streak]');
+
+    if (activeQuizId !== 'final-exam') {
+      streak.dataset.streak = '0';
+      streak.textContent = 'Current streak: 0';
+    }
+
+    feedback.textContent = 'Skipped. Moving to another question.';
+    feedback.className = 'quiz-feedback';
+    quizPointer = (quizPointer + 1) % quizOrder.length;
+    renderCurrentQuestion();
+  }
+
+  function finishFinalExam(correctCount, total, feedbackEl) {
+    const score = Math.round((correctCount / total) * 100);
+
+    if (score === 100) {
+      state.finalExamPassed = true;
+      saveState();
+      render();
+      feedbackEl.textContent = 'Perfect score. Final exam passed, section completion unlocked at 100%!';
+      feedbackEl.className = 'quiz-feedback correct';
+      return;
+    }
+
+    state.finalExamPassed = false;
+    saveState();
+    render();
+    feedbackEl.textContent = `Final exam score ${score}%. You need 100% to complete the section.`;
+    feedbackEl.className = 'quiz-feedback incorrect';
+  }
+
+  function render() {
+    const passedCount = Object.values(state.passedIdeas).filter(Boolean).length;
+    const ideaProgress = passedCount * ideaWeight;
+    const progress = state.finalExamPassed ? 100 : ideaProgress;
+
+    progressLabel.textContent = `Section progress: ${progress}%`;
+    progressBar.style.width = `${progress}%`;
+
+    Object.keys(state.passedIdeas).forEach((ideaId) => {
+      const statusEl = root.querySelector(`[data-idea-status="${ideaId}"]`);
+      if (!statusEl) {
+        return;
+      }
+
+      statusEl.textContent = state.passedIdeas[ideaId] ? 'Status: passed ✅' : 'Status: not passed';
+    });
+
+    finalStatusLabel.textContent = state.finalExamPassed
+      ? 'Final exam status: passed with 100% ✅'
+      : 'Final exam status: not passed';
+  }
+
+  function normalize(value) {
+    return String(value).trim().toLowerCase().replace(/\s+/g, ' ');
+  }
+
+  function shuffle(items) {
+    for (let i = items.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [items[i], items[j]] = [items[j], items[i]];
+    }
+
+    return items;
+  }
+}

@@ -454,3 +454,139 @@ textarea {
     grid-template-columns: 1fr;
   }
 }
+
+.kinematics-page {
+  display: grid;
+  gap: 1rem;
+}
+
+.kinematics-overview p {
+  margin-bottom: 0;
+  color: var(--muted);
+}
+
+.big-idea-box {
+  background: #f0fdfa;
+  border: 1px solid #bfdbfe;
+  border-radius: 16px;
+  padding: 1rem;
+}
+
+.big-idea-box h2 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.idea-columns {
+  margin-top: 0.8rem;
+  display: grid;
+  grid-template-columns: 1.25fr 0.9fr;
+  gap: 1rem;
+}
+
+.article-link-list {
+  margin: 0;
+  padding-left: 1rem;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.article-link-list a {
+  color: var(--primary-dark);
+  text-underline-offset: 2px;
+}
+
+.micro-article {
+  margin-top: 0.9rem;
+  border-top: 1px solid var(--border);
+  padding-top: 0.8rem;
+}
+
+.micro-article h4 {
+  margin: 0;
+}
+
+.micro-article p {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+}
+
+.practice-column {
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
+}
+
+.practice-column p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.quiz-launch {
+  width: fit-content;
+}
+
+.quiz-modal {
+  border: none;
+  border-radius: 16px;
+  width: min(580px, 92vw);
+  padding: 0;
+}
+
+.quiz-modal::backdrop {
+  background: rgb(15 23 42 / 48%);
+}
+
+.quiz-form {
+  display: grid;
+  gap: 0.9rem;
+  padding: 1.1rem;
+}
+
+.quiz-form h3,
+.quiz-form h4,
+.quiz-form p {
+  margin: 0;
+}
+
+.quiz-input {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.65rem;
+  font: inherit;
+}
+
+.quiz-actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.quiz-note {
+  color: var(--muted);
+  font-size: 0.94rem;
+}
+
+.quiz-feedback {
+  min-height: 1.2rem;
+  font-weight: 600;
+}
+
+.quiz-feedback.correct {
+  color: var(--success);
+}
+
+.quiz-feedback.incorrect {
+  color: var(--error);
+}
+
+.final-exam-box {
+  border-color: #93c5fd;
+  background: #eff6ff;
+}
+
+@media (max-width: 860px) {
+  .idea-columns {
+    grid-template-columns: 1fr;
+  }
+}
