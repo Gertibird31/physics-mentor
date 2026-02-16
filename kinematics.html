@@ -9,18 +9,145 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
-    <header class="topbar"><div class="container nav-wrap"><a class="brand" href="index.html">Physics Mentor</a><nav class="nav-links"><a href="physics1.html">Physics 1</a></nav>        <button class="secondary auth-trigger" type="button">Sign in with email</button>
-<a class="cta-link" href="physics1.html">Back to topics</a></div></header>
-    <main class="container section">
+  <body data-page="kinematics">
+    <header class="topbar">
+      <div class="container nav-wrap">
+        <a class="brand" href="index.html">Physics Mentor</a>
+        <nav class="nav-links"><a href="physics1.html">Physics 1</a></nav>
+        <button class="secondary auth-trigger" type="button">Sign in with email</button>
+        <a class="cta-link" href="physics1.html">Back to topics</a>
+      </div>
+    </header>
+
+    <main class="container section kinematics-page" data-kinematics-root>
       <h1>1D/2D Kinematics</h1>
-      <p class="mastery-label">Topic mastery: 55%</p>
-      <div class="progress"><span style="width: 55%"></span></div>
-      <section class="topic-detail-grid">
-        <article class="topic-card"><h2>Learn this topic</h2><ul class="learning-list"><li><strong>Position and displacement:</strong> Scalars vs vectors and reference frames.</li><li><strong>Velocity and acceleration:</strong> Average vs instantaneous rates of change.</li><li><strong>Kinematic equations:</strong> Constant-acceleration modeling in 1D.</li><li><strong>Projectile motion:</strong> Split motion into horizontal and vertical components.</li></ul></article>
-        <article class="topic-card"><h2>Answer questions</h2><ol class="question-list"><li>How far does an object travel in 4 s at 3 m/s?</li><li>A car slows from 20 m/s to 8 m/s in 3 s. Find acceleration.</li><li>A projectile is launched at 18 m/s at 35°. What is the initial vertical velocity?</li></ol><textarea placeholder="Work your solutions here..."></textarea></article>
+      <p class="mastery-label" data-kinematics-progress-label>Section progress: 0%</p>
+      <div class="progress"><span data-kinematics-progress-bar style="width: 0%"></span></div>
+
+      <section class="topic-card kinematics-overview">
+        <h2>Section overview</h2>
+        <p>
+          In this section, you will build a complete motion toolkit: how to represent position and displacement,
+          use velocity and acceleration to model change, solve 1D constant-acceleration problems, and analyze 2D
+          projectile motion with components. Work through each big idea in order, pass the mini check for each,
+          and then finish with a cumulative final exam.
+        </p>
+      </section>
+
+      <section class="big-idea-box" data-idea-id="vectors-motion">
+        <h2>Big Idea 1: Position, Displacement, and Motion Graphs</h2>
+        <p class="topic-goal">Goal: describe motion in words, equations, and graphs.</p>
+        <div class="idea-columns">
+          <article class="topic-card">
+            <h3>Articles</h3>
+            <ul class="article-link-list">
+              <li><a href="#article-reference-frame">Reference frames and coordinate choices</a></li>
+              <li><a href="#article-displacement">Distance vs displacement</a></li>
+              <li><a href="#article-graphs">Interpreting position-time and velocity-time graphs</a></li>
+            </ul>
+
+            <div class="micro-article" id="article-reference-frame">
+              <h4>Reference frames and coordinate choices</h4>
+              <p>Every motion statement needs an origin and a positive direction. Switching coordinate systems changes signs, not physics.</p>
+            </div>
+            <div class="micro-article" id="article-displacement">
+              <h4>Distance vs displacement</h4>
+              <p>Distance is total path length (scalar). Displacement is final position minus initial position (vector-like in 1D with sign).</p>
+            </div>
+            <div class="micro-article" id="article-graphs">
+              <h4>Motion graphs</h4>
+              <p>On x-t graphs, slope is velocity. On v-t graphs, slope is acceleration and signed area gives displacement.</p>
+            </div>
+          </article>
+          <article class="topic-card practice-column">
+            <h3>Practice check</h3>
+            <p>Open a question popup and answer 5 in a row correctly to pass this big idea.</p>
+            <button class="primary quiz-launch" type="button" data-quiz-launch="vectors-motion">Start question popup</button>
+            <p class="mastery-label" data-idea-status="vectors-motion">Status: not passed</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="big-idea-box" data-idea-id="kinematics-1d">
+        <h2>Big Idea 2: 1D Constant-Acceleration Kinematics</h2>
+        <p class="topic-goal">Goal: solve linear motion problems using kinematic equations and units.</p>
+        <div class="idea-columns">
+          <article class="topic-card">
+            <h3>Articles</h3>
+            <ul class="article-link-list">
+              <li><a href="#article-avg-inst">Average vs instantaneous velocity/acceleration</a></li>
+              <li><a href="#article-equations">Choosing the right kinematic equation</a></li>
+              <li><a href="#article-signs">Sign conventions and common mistakes</a></li>
+            </ul>
+
+            <div class="micro-article" id="article-avg-inst">
+              <h4>Average vs instantaneous quantities</h4>
+              <p>Average values describe change over intervals; instantaneous values are the local value at a moment in time.</p>
+            </div>
+            <div class="micro-article" id="article-equations">
+              <h4>Kinematic equation selection</h4>
+              <p>List known variables among x, v, v₀, a, t first. Then choose the equation containing the unknown but not extra unknowns.</p>
+            </div>
+            <div class="micro-article" id="article-signs">
+              <h4>Signs and direction</h4>
+              <p>Negative acceleration does not always mean slowing down; it means acceleration points in the negative coordinate direction.</p>
+            </div>
+          </article>
+          <article class="topic-card practice-column">
+            <h3>Practice check</h3>
+            <p>Open a question popup and answer 5 in a row correctly to pass this big idea.</p>
+            <button class="primary quiz-launch" type="button" data-quiz-launch="kinematics-1d">Start question popup</button>
+            <p class="mastery-label" data-idea-status="kinematics-1d">Status: not passed</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="big-idea-box" data-idea-id="projectile-2d">
+        <h2>Big Idea 3: 2D Projectile Motion</h2>
+        <p class="topic-goal">Goal: split vectors into components and recombine for full projectile solutions.</p>
+        <div class="idea-columns">
+          <article class="topic-card">
+            <h3>Articles</h3>
+            <ul class="article-link-list">
+              <li><a href="#article-components">Velocity components at launch</a></li>
+              <li><a href="#article-independence">Independence of horizontal and vertical motion</a></li>
+              <li><a href="#article-range">Time of flight, peak height, and range</a></li>
+            </ul>
+
+            <div class="micro-article" id="article-components">
+              <h4>Launch components</h4>
+              <p>Resolve initial velocity with trigonometry: v₀ₓ = v₀ cos θ and v₀ᵧ = v₀ sin θ for an angle measured from horizontal.</p>
+            </div>
+            <div class="micro-article" id="article-independence">
+              <h4>Component independence</h4>
+              <p>Horizontal acceleration is approximately zero (ignoring drag), while vertical acceleration is -g.</p>
+            </div>
+            <div class="micro-article" id="article-range">
+              <h4>Projectile metrics</h4>
+              <p>Use vertical motion to find flight time, then use x = vₓt for range. Always check units and direction signs.</p>
+            </div>
+          </article>
+          <article class="topic-card practice-column">
+            <h3>Practice check</h3>
+            <p>Open a question popup and answer 5 in a row correctly to pass this big idea.</p>
+            <button class="primary quiz-launch" type="button" data-quiz-launch="projectile-2d">Start question popup</button>
+            <p class="mastery-label" data-idea-status="projectile-2d">Status: not passed</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="big-idea-box final-exam-box" data-idea-id="final-exam">
+        <h2>Final Exam: Full 1D/2D Kinematics</h2>
+        <p class="topic-goal">This cumulative exam covers all big ideas. You must score 100% to reach 100% section completion.</p>
+        <article class="topic-card practice-column">
+          <h3>Cumulative assessment</h3>
+          <p>The final exam serves one question at a time across the full section. Get every question correct in a run to pass.</p>
+          <button class="primary quiz-launch" type="button" data-quiz-launch="final-exam">Take final exam</button>
+          <p class="mastery-label" data-final-status>Final exam status: not passed</p>
+        </article>
       </section>
     </main>
+
     <script src="script.js"></script>
   </body>
 </html>
